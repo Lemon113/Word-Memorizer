@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:background="@drawable/border"
+    >
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
+        android:text="Title"/>
+
+    <TextView
+        android:id="@+id/wordCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:gravity="center"
+        android:layout_margin="7dp"
+        android:layout_alignParentRight="true"
+        />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@id/title"
+        android:layout_margin="5dp"
+        />
+
+    <TextView
+        android:id="@+id/word1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="word1"
+        android:textSize="17dp"
+        android:layout_below="@id/divider"
+        />
+
+    <TextView
+        android:id="@+id/word2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="word2"
+        android:textSize="17dp"
+        android:layout_below="@id/word1"
+        />
+
+    <TextView
+        android:id="@+id/word3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="word3"
+        android:textSize="17dp"
+        android:layout_below="@id/word2"
+        />
+
+</RelativeLayout>
