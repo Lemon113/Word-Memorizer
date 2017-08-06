@@ -1,10 +1,15 @@
 package com.retartsoft.lemon.wordmemorizer.Fragments;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -63,11 +68,19 @@ public class FragmentCard extends ListFragment {
 
         ArrayAdapter<Word> adapter = new WordAdapter(mWords);
         setListAdapter(adapter);
+        if (mCard.getTitle() == null)
+            getActivity().setTitle("New card ");
+        else
+            getActivity().setTitle("Card " + mCard.getTitle());
     }
-
+    @TargetApi(11)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_card, parent, false);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
+            if (NavUtils.getParentActivityName(getActivity()) != null)
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         mTitleField = (EditText)v.findViewById(R.id.card_title);
         mTitleField.setText(mCard.getTitle());
 
@@ -80,6 +93,7 @@ public class FragmentCard extends ListFragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mCard.setTitle(s.toString());
+                getActivity().setTitle("Card " + s.toString());
             }
 
             @Override
@@ -89,4 +103,19 @@ public class FragmentCard extends ListFragment {
         });
         return v;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case android.R.id.home:
+                if (NavUtils.getParentActivityName(getActivity()) != null) {
+                    NavUtils.navigateUpFromSameTask(getActivity());
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
 }

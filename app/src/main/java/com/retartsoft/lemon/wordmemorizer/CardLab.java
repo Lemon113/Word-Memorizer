@@ -19,19 +19,6 @@ public class CardLab {
     private CardLab(Context appContext) {
         mAppContext = appContext;
         mCards = new ArrayList<Card>();
-        for (int i = 0; i < 100; ++i) {
-            Card c = new Card();
-            c.setTitle("Card #" + i);
-            ArrayList<Word> words = new ArrayList<Word>();
-            for (int j = 0; j < 30; ++j) {
-                Word w = new Word();
-                w.setEng("English word #" + j);
-                w.setRus("Русский слово #" + j);
-                words.add(w);
-            }
-            c.setWords(words);
-            mCards.add(c);
-        }
     }
 
     public static CardLab get(Context c) {
@@ -50,5 +37,21 @@ public class CardLab {
                 return c;
         }
         return null;
+    }
+
+    public void addCard(Card c) {
+        ArrayList<Word> words = new ArrayList<Word>();
+        for (int j = 0; j < 30; ++j) {
+            Word w = new Word();
+            w.setEng("English word #" + j);
+            w.setRus("Русский слово #" + j);
+            words.add(w);
+        }
+        c.setWords(words);
+        mCards.add(c);
+    }
+
+    public void deleteCard(Card c) {
+        mCards.remove(c);
     }
 }

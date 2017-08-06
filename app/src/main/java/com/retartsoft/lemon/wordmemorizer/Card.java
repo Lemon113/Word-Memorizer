@@ -12,9 +12,11 @@ public class Card {
     private UUID mId;
     private String mTitle;
     private ArrayList<Word> mWords;
+    private long createDate;
 
     public Card() {
         mId = UUID.randomUUID();
+        createDate = 0;
     }
 
     public UUID getId() {
@@ -44,5 +46,13 @@ public class Card {
 
     public void setWords(ArrayList<Word> words) {
         mWords = words;
+    }
+
+    public long getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(long date) {
+        createDate = date;
     }
 }

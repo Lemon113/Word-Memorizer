@@ -19,7 +19,6 @@ public class FragmentActivityCard extends SingleFragmentActivity {
     @Override
     public  void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("test");
     }
 
 }
