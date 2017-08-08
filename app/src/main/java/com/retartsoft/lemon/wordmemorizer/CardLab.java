@@ -54,4 +54,9 @@ public class CardLab {
     public void deleteCard(Card c) {
         mCards.remove(c);
     }
+
+    public void updateCards() {
+        DBHelper dbHelper = new DBHelper(this.mAppContext);
+        this.mCards = dbHelper.queryCards();
+    }
 }

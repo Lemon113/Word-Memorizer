@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.retartsoft.lemon.wordmemorizer.Card;
 import com.retartsoft.lemon.wordmemorizer.CardLab;
+import com.retartsoft.lemon.wordmemorizer.DBHelper;
 import com.retartsoft.lemon.wordmemorizer.FragmentActivities.FragmentActivityCard;
 import com.retartsoft.lemon.wordmemorizer.R;
 
@@ -33,14 +34,11 @@ public class FragmentCardlist extends ListFragment {
 
     private static final int DIVIDER_HEIGHT = 100;
 
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_card_list, menu);
     }
-
-
 
     @Override
     public void onResume() {
@@ -151,6 +149,9 @@ public class FragmentCardlist extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        CardLab.get(getActivity()).updateCards();
+
         setHasOptionsMenu(true);
         getActivity().setTitle(R.string.app_name);
         mCards = CardLab.get(getActivity()).getCards();

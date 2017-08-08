@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.retartsoft.lemon.wordmemorizer.Card;
 import com.retartsoft.lemon.wordmemorizer.CardLab;
+import com.retartsoft.lemon.wordmemorizer.DBHelper;
 import com.retartsoft.lemon.wordmemorizer.R;
 import com.retartsoft.lemon.wordmemorizer.Word;
 
@@ -115,6 +116,14 @@ public class FragmentCard extends ListFragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        DBHelper dbHelper = new DBHelper(getActivity());
+        mCard.setCreateDate(System.currentTimeMillis() / 1000);
+        dbHelper.insertCard(mCard);
     }
 
 
