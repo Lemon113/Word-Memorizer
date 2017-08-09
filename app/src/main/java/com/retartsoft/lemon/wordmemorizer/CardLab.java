@@ -28,6 +28,7 @@ public class CardLab {
     }
 
     public ArrayList<Card> getCards() {
+        updateCards();
         return mCards;
     }
 
@@ -52,10 +53,12 @@ public class CardLab {
     }
 
     public void deleteCard(Card c) {
+        DBHelper dbHelper = new DBHelper(mAppContext);
+        dbHelper.removeCard(c);
         mCards.remove(c);
     }
 
-    public void updateCards() {
+    private void updateCards() {
         DBHelper dbHelper = new DBHelper(this.mAppContext);
         this.mCards = dbHelper.queryCards();
     }

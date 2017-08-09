@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Created by Lemon on 06.08.2017.
@@ -19,6 +20,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final int VERSION = 1;
 
     private static final String TABLE_CARDS                  = "cards";
+    private static final String COLUMN_CARD_ID               = "id";
     private static final String COLUMN_CREATE_DATE           = "create_date";
     private static final String COLUMN_CARDNAME              = "cardname";
     private static final String COLUMN_SUCCESSFUL_ATTEMPTS   = "successful_attempts";
@@ -41,6 +43,7 @@ public class DBHelper extends SQLiteOpenHelper {
             Card c = new Card();
             c.setCreateDate(getLong(getColumnIndex(COLUMN_CREATE_DATE)));
             c.setTitle(getString(getColumnIndex(COLUMN_CARDNAME)));
+            c.setId(UUID.fromString(getString(getColumnIndex(COLUMN_CARD_ID))));
             super.moveToNext();
             return c;
         }
@@ -49,28 +52,34 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql = "CREATE TABLE cards ( " +
-                " id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                " id VARCHAR(36) PRIMARY KEY," +
                 " create_date INTEGER," +
                 " cardname VARCHAR(100)," +
                 " successful_attempts INTEGER," +
                 " failed_attempts INTEGER)";
-        Log.e("test", sql);
         db.execSQL(sql);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 
-    }
-
-    public long insertCard(Card c) {
+    public void insertCard(Card c) {
         ContentValues cv = new ContentValues();
+        cv.put(COLUMN_CARD_ID, c.getId().toString());
         cv.put(COLUMN_CARDNAME, c.getTitle());
         cv.put(COLUMN_CREATE_DATE, c.getCreateDate());
         cv.put(COLUMN_SUCCESSFUL_ATTEMPTS, 0);
         cv.put(COLUMN_FAILED_ATTEMPTS, 0);
-        long id = getWritableDatabase().insert(TABLE_CARDS, null, cv);
-        return id;
+        getWritableDatabase().insert(TABLE_CARDS, null, cv);
+    }
+
+    public void updateCard(Card mCard) {
+        //TODO: implement method
+    }
+
+    public void removeCard(Card card) {
+        String where = COLUMN_CARD_ID + "=" + "'" + card.getId().toString() + "'";
+        getWritableDatabase().delete(TABLE_CARDS, where, null);
     }
 
     public ArrayList<Card> queryCards() {

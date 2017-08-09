@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 import com.retartsoft.lemon.wordmemorizer.Card;
 import com.retartsoft.lemon.wordmemorizer.CardLab;
-import com.retartsoft.lemon.wordmemorizer.DBHelper;
 import com.retartsoft.lemon.wordmemorizer.FragmentActivities.FragmentActivityCard;
 import com.retartsoft.lemon.wordmemorizer.R;
 
@@ -59,6 +58,7 @@ public class FragmentCardlist extends ListFragment {
 
         Intent i = new Intent(getActivity(), FragmentActivityCard.class);
         i.putExtra(FragmentCard.EXTRA_CARD_ID, c.getId());
+        i.putExtra(FragmentCard.EXTRA_EXIST_CARD, true);
         startActivity(i);
     }
 
@@ -150,10 +150,9 @@ public class FragmentCardlist extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        CardLab.get(getActivity()).updateCards();
-
         setHasOptionsMenu(true);
         getActivity().setTitle(R.string.app_name);
+        mCards = new ArrayList<Card>();
         mCards = CardLab.get(getActivity()).getCards();
 
         ArrayAdapter<Card> adapter = new CardAdapter(mCards);

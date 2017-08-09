@@ -1,5 +1,7 @@
 package com.retartsoft.lemon.wordmemorizer;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -55,4 +57,5 @@ public class Card {
     public void setCreateDate(long date) {
         createDate = date;
     }
+
 }

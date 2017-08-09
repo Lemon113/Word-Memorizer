@@ -34,6 +34,8 @@ public class FragmentCard extends ListFragment {
     private Card mCard;
     private EditText mTitleField;
     public static final String EXTRA_CARD_ID = "EXTRA_CARD_ID";
+    public static final String EXTRA_EXIST_CARD = "EXTRA_EXIST_CARD";
+    private boolean existCard = false;
 
     private ArrayList<Word> mWords;
 
@@ -63,6 +65,13 @@ public class FragmentCard extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            existCard = savedInstanceState.getBoolean(EXTRA_EXIST_CARD);
+        } else {
+            existCard = getActivity().getIntent().getBooleanExtra(EXTRA_EXIST_CARD, false);
+        }
+
         UUID cardId = (UUID)getActivity().getIntent().getSerializableExtra(EXTRA_CARD_ID);
         mCard = CardLab.get(getActivity()).getCard(cardId);
         mWords = mCard.getWords();
@@ -74,6 +83,7 @@ public class FragmentCard extends ListFragment {
         else
             getActivity().setTitle("Card " + mCard.getTitle());
     }
+
     @TargetApi(11)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -122,9 +132,18 @@ public class FragmentCard extends ListFragment {
     public void onDestroy() {
         super.onDestroy();
         DBHelper dbHelper = new DBHelper(getActivity());
-        mCard.setCreateDate(System.currentTimeMillis() / 1000);
-        dbHelper.insertCard(mCard);
+        if (!existCard) {
+            mCard.setCreateDate(System.currentTimeMillis() / 1000);
+            dbHelper.insertCard(mCard);
+        } else {
+            dbHelper.updateCard(mCard);
+        }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(EXTRA_EXIST_CARD, existCard);
+    }
 
 }

@@ -4,9 +4,7 @@
 
     <item
         android:state_activated="true"
-        android:drawable="@color/light_red"
-        >
-    </item>
+        android:drawable="@color/light_red"/>
 
     <item
         android:state_activated="false"
