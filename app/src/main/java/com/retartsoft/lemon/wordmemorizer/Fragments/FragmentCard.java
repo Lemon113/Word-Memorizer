@@ -1,6 +1,7 @@
 package com.retartsoft.lemon.wordmemorizer.Fragments;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -14,10 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.retartsoft.lemon.wordmemorizer.Card;
 import com.retartsoft.lemon.wordmemorizer.CardLab;
+import com.retartsoft.lemon.wordmemorizer.FragmentActivities.FragmentActivityWord;
 import com.retartsoft.lemon.wordmemorizer.R;
 import com.retartsoft.lemon.wordmemorizer.Word;
 
@@ -62,7 +65,13 @@ public class FragmentCard extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UUID cardId = (UUID)getActivity().getIntent().getSerializableExtra(EXTRA_CARD_ID);
+        UUID cardId = null;
+        if (savedInstanceState == null) {
+            cardId = (UUID)getActivity().getIntent().getSerializableExtra(EXTRA_CARD_ID);
+        }
+        else {
+            cardId = (UUID)savedInstanceState.getSerializable(EXTRA_CARD_ID);
+        }
         mCard = CardLab.get(getActivity()).getCard(cardId);
         mWords = mCard.getWords();
 
@@ -73,6 +82,7 @@ public class FragmentCard extends ListFragment {
         else
             getActivity().setTitle("Card " + mCard.getTitle());
     }
+
     @TargetApi(11)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -105,6 +115,16 @@ public class FragmentCard extends ListFragment {
     }
 
     @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        Word w = ((WordAdapter)getListAdapter()).getItem(position);
+
+        Intent i = new Intent(getActivity(), FragmentActivityWord.class);
+        i.putExtra(FragmentWord.EXTRA_WORD_ID, w.getId());
+        startActivity(i);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case android.R.id.home:
@@ -117,5 +137,10 @@ public class FragmentCard extends ListFragment {
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(EXTRA_CARD_ID, mCard.getId());
+    }
 
 }
