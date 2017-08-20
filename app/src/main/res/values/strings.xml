@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Word Memorizer</string>
-    <string name="test">I am not a test string anymore. HAHAHAHAHAHH@@@@@YOU@</string>
+
+    <string name="title_word">Word Editor</string>
+
+    <string name="eng_hint">English word</string>
+    <string name="rus_hint">Russian word</string>
+
+
 </resources>
