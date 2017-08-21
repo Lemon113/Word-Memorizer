@@ -1,6 +1,7 @@
 package com.retartsoft.lemon.wordmemorizer.Fragments;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -14,11 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.retartsoft.lemon.wordmemorizer.Card;
 import com.retartsoft.lemon.wordmemorizer.CardLab;
 import com.retartsoft.lemon.wordmemorizer.DBHelper;
+import com.retartsoft.lemon.wordmemorizer.FragmentActivities.FragmentActivityWord;
 import com.retartsoft.lemon.wordmemorizer.R;
 import com.retartsoft.lemon.wordmemorizer.Word;
 
@@ -113,6 +116,16 @@ public class FragmentCard extends ListFragment {
             }
         });
         return v;
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        Word w = ((WordAdapter)getListAdapter()).getItem(position);
+
+        Intent i = new Intent(getActivity(), FragmentActivityWord.class);
+        i.putExtra(FragmentWord.EXTRA_WORD_ID, w.getId());
+        startActivity(i);
     }
 
     @Override
