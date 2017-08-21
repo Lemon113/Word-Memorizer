@@ -10,9 +10,13 @@ public class Word {
     public String eng;
     public String rus;
     public UUID id;
+    public String comment;
 
     public void Word() {
         id = UUID.randomUUID();
+        comment = "";
+        eng = "";
+        rus = "";
     }
 
     public void setRus(String val) {
@@ -34,4 +38,11 @@ public class Word {
     public UUID getId() {
         return id;
     }
+
+    public void setId(UUID uuid) { id = uuid; }
+
+    public void setComment(String s) { comment = s; }
+
+    public String getComment(String s) { return comment; }
 }
+

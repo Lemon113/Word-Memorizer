@@ -146,7 +146,9 @@ public class FragmentCard extends ListFragment {
         super.onDestroy();
         DBHelper dbHelper = new DBHelper(getActivity());
         if (!existCard) {
-            mCard.setCreateDate(System.currentTimeMillis() / 1000);
+            long d = System.currentTimeMillis() / 1000;
+            mCard.setCreateDate(d);
+            mCard.setEditDate(d);
             dbHelper.insertCard(mCard);
         } else {
             dbHelper.updateCard(mCard);

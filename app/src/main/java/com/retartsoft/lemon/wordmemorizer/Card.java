@@ -15,10 +15,14 @@ public class Card {
     private String mTitle;
     private ArrayList<Word> mWords;
     private long createDate;
+    private long editDate;
+    private String comment;
 
     public Card() {
         mId = UUID.randomUUID();
         createDate = 0;
+        editDate = 0;
+        comment = "";
     }
 
     public UUID getId() {
@@ -58,4 +62,11 @@ public class Card {
         createDate = date;
     }
 
+    public void setEditDate(long date) { editDate = date; }
+
+    public long getEditDate() { return editDate; }
+
+    public void setComment(String s) { comment = s; }
+
+    public String getComment() { return comment; }
 }
