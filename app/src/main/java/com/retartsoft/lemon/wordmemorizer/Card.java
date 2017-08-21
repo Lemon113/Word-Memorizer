@@ -19,6 +19,7 @@ public class Card {
     private String comment;
 
     public Card() {
+        mWords = new ArrayList<Word>();
         mId = UUID.randomUUID();
         createDate = 0;
         editDate = 0;

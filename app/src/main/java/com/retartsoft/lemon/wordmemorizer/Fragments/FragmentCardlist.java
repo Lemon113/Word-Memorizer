@@ -85,7 +85,12 @@ public class FragmentCardlist extends ListFragment {
             word1.setText("ENG WORD1");
             word2.setText("ENG WORD2");
             word3.setText("ENG WORD3");
-            counter.setText(Integer.toString(c.getWords().size()));
+            if (c.getWords() != null) {
+                counter.setText(Integer.toString(c.getWords().size()));
+            }
+            else {
+                counter.setText("0");
+            }
 
             return convertView;
         }

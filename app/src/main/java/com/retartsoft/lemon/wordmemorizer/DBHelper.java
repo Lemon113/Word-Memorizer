@@ -98,7 +98,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 " successful_attempts INTEGER," +
                 " failed_attempts INTEGER," +
                 " card_id INTEGER, " +
-                " FOREIGN KEY card_id REFERENCES CARDS(id) ON DELETE CASCADE, ON UPDATE CASCADE)";
+                " FOREIGN KEY (card_id) REFERENCES cards(id) ON DELETE CASCADE ON UPDATE CASCADE)";
         db.execSQL(sql);
     }
 
