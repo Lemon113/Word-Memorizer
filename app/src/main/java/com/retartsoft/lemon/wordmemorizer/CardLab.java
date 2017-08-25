@@ -41,14 +41,6 @@ public class CardLab {
     }
 
     public void addCard(Card c) {
-        ArrayList<Word> words = new ArrayList<Word>();
-        for (int j = 0; j < 30; ++j) {
-            Word w = new Word();
-            w.setEng("English word #" + j);
-            w.setRus("Русский слово #" + j);
-            words.add(w);
-        }
-        c.setWords(words);
         mCards.add(c);
     }
 

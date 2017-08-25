@@ -2,15 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/border"
-    android:padding="6dp">
+    android:padding="6dp"
+    android:background="@drawable/bg_active_delete">
 
     <TextView
         android:id="@+id/engWord"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:text="English word"
+        android:textSize="20sp"
         android:textColor="@android:color/black"
         android:layout_margin="3dp"/>
 
@@ -26,8 +25,7 @@
         android:id="@+id/rusWord"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="17dp"
-        android:text="Russian word"
+        android:textSize="17sp"
         android:layout_margin="3dp"
         android:layout_below="@id/divider"/>
 

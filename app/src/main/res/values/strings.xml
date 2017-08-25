@@ -5,6 +5,9 @@
 
     <string name="eng_hint">English word</string>
     <string name="rus_hint">Russian word</string>
-
+    <string name="del_card">Delete card</string>
+    <string name="del_word">Delete word</string>
+    <string name="new_card">New card</string>
+    <string name="new_word">New word</string>
 
 </resources>

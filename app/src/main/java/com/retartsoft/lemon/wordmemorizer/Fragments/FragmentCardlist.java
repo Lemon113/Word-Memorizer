@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -62,6 +63,10 @@ public class FragmentCardlist extends ListFragment {
         startActivity(i);
     }
 
+    public void edit(View v) {
+        Log.i("test", "edit clicked");
+    }
+
     private class CardAdapter extends ArrayAdapter<Card> {
 
         public CardAdapter(ArrayList<Card> cards) {
@@ -85,8 +90,8 @@ public class FragmentCardlist extends ListFragment {
             word1.setText("ENG WORD1");
             word2.setText("ENG WORD2");
             word3.setText("ENG WORD3");
-            if (c.getWords() != null) {
-                counter.setText(Integer.toString(c.getWords().size()));
+            if (c.getWords(getActivity()) != null) {
+                counter.setText(Integer.toString(c.getWords(getActivity()).size()));
             }
             else {
                 counter.setText("0");

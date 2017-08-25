@@ -7,12 +7,12 @@ import java.util.UUID;
  */
 
 public class Word {
-    public String eng;
-    public String rus;
-    public UUID id;
-    public String comment;
+    private String eng;
+    private String rus;
+    private UUID id;
+    private String comment;
 
-    public void Word() {
+    public Word() {
         id = UUID.randomUUID();
         comment = "";
         eng = "";

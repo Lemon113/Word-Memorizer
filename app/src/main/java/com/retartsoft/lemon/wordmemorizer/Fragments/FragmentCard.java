@@ -9,10 +9,14 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -33,6 +37,8 @@ import java.util.UUID;
  */
 
 public class FragmentCard extends ListFragment {
+
+    private static final String TAG = "FragmentCard";
 
     private Card mCard;
     private EditText mTitleField;
@@ -66,9 +72,16 @@ public class FragmentCard extends ListFragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_word_list, menu);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setHasOptionsMenu(true);
         if (savedInstanceState != null) {
             existCard = savedInstanceState.getBoolean(EXTRA_EXIST_CARD);
         } else {
@@ -77,7 +90,7 @@ public class FragmentCard extends ListFragment {
 
         UUID cardId = (UUID)getActivity().getIntent().getSerializableExtra(EXTRA_CARD_ID);
         mCard = CardLab.get(getActivity()).getCard(cardId);
-        mWords = mCard.getWords();
+        mWords = mCard.getWords(getActivity());
 
         ArrayAdapter<Word> adapter = new WordAdapter(mWords);
         setListAdapter(adapter);
@@ -91,9 +104,54 @@ public class FragmentCard extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_card, parent, false);
+        ListView listView = (ListView)v.findViewById(android.R.id.list);
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
             if (NavUtils.getParentActivityName(getActivity()) != null)
             ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+            listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+                @Override
+                public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+
+                }
+
+                @Override
+                public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                    MenuInflater inflater = mode.getMenuInflater();
+                    inflater.inflate(R.menu.word_list_item_context, menu);
+                    return true;
+                }
+
+                @Override
+                public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                    return false;
+                }
+
+                @Override
+                public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.menu_item_delete_word:
+                            WordAdapter adapter = (WordAdapter)getListAdapter();
+                            for (int i = adapter.getCount() - 1; i >= 0; --i) {
+                                if (getListView().isItemChecked(i)) {
+                                    mCard.deleteWord(adapter.getItem(i));
+                                }
+                            }
+                            mode.finish();
+                            adapter.notifyDataSetChanged();
+                            return true;
+                        default:
+                            return false;
+                    }
+                }
+
+                @Override
+                public void onDestroyActionMode(ActionMode mode) {
+
+                }
+            });
+        } else {
+            registerForContextMenu(listView);
         }
         mTitleField = (EditText)v.findViewById(R.id.card_title);
         mTitleField.setText(mCard.getTitle());
@@ -124,7 +182,9 @@ public class FragmentCard extends ListFragment {
         Word w = ((WordAdapter)getListAdapter()).getItem(position);
 
         Intent i = new Intent(getActivity(), FragmentActivityWord.class);
+        i.putExtra(FragmentWord.EXTRA_CARD_ID, mCard.getId());
         i.putExtra(FragmentWord.EXTRA_WORD_ID, w.getId());
+        i.putExtra(FragmentWord.EXTRA_EXIST_WORD, true);
         startActivity(i);
     }
 
@@ -136,6 +196,14 @@ public class FragmentCard extends ListFragment {
                     NavUtils.navigateUpFromSameTask(getActivity());
                 }
                 return true;
+            case R.id.menu_item_new_word:
+                Word w = new Word();
+                mCard.addWord(w);
+                Intent i = new Intent(getActivity(), FragmentActivityWord.class);
+                i.putExtra(FragmentWord.EXTRA_CARD_ID, mCard.getId());
+                i.putExtra(FragmentWord.EXTRA_WORD_ID, w.getId());
+                startActivity(i);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -144,6 +212,16 @@ public class FragmentCard extends ListFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        saveCard();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(EXTRA_EXIST_CARD, existCard);
+    }
+
+    private void saveCard() {
         DBHelper dbHelper = new DBHelper(getActivity());
         if (!existCard) {
             long d = System.currentTimeMillis() / 1000;
@@ -153,12 +231,6 @@ public class FragmentCard extends ListFragment {
         } else {
             dbHelper.updateCard(mCard);
         }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(EXTRA_EXIST_CARD, existCard);
     }
 
 }

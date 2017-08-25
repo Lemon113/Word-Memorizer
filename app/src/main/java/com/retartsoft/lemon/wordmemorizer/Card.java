@@ -47,8 +47,14 @@ public class Card {
         this.mTitle = mTitle;
     }
 
-    public ArrayList<Word> getWords() {
+    public ArrayList<Word> getWords(Context context) {
+        updateWords(context);
         return mWords;
+    }
+
+    private void updateWords(Context context) {
+        DBHelper dbHelper = new DBHelper(context);
+        this.mWords = dbHelper.queryWords(this.getId());
     }
 
     public void setWords(ArrayList<Word> words) {
@@ -70,4 +76,16 @@ public class Card {
     public void setComment(String s) { comment = s; }
 
     public String getComment() { return comment; }
+
+    public void deleteWord(Word w) { mWords.remove(w); }
+
+    public void addWord(Word w) { mWords.add(w); }
+
+    public Word getWord(UUID wordId) {
+        for (Word w : mWords) {
+            if (w.getId().equals(wordId))
+                return w;
+        }
+        return null;
+    }
 }

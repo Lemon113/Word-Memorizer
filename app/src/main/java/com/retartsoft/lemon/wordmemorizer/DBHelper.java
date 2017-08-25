@@ -141,7 +141,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return cardList;
     }
 
-    //TODO: add comment
+    //TODO: add column comment
     public void insertWord(Word w, UUID cardId) {
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_ID, w.getId().toString());

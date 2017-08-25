@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/tv_eng"
+        android:id="@+id/et_eng"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -15,7 +15,7 @@
 
 
     <EditText
-        android:id="@+id/tv_rus"
+        android:id="@+id/et_rus"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
